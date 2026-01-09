@@ -3,108 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Off The Map</title>
+    <title>OFF THE MAP // TERMINAL</title>
+    
     <link rel="icon" href="data:,">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <div class="crt-overlay"></div>
-    <div class="scanlines"></div>
-    <div class="screen-glitch"></div>
+    <div class="monitor-casing"></div>
+    <div class="crt-lines"></div>
+    <div class="screen-glow"></div>
 
-    <div class="container">
+    <div class="terminal-wrapper">
         
-        <div id="boot-screen">
-            <div id="boot-text"></div>
-            <div class="cursor">_</div>
+        <div id="boot-layer">
+            <div id="boot-console"></div>
+            <span class="blinking-cursor">_</span>
         </div>
 
-        <main id="main-interface" class="hidden">
+        <main id="dashboard" class="hidden">
             
-            <header class="site-header">
-                <div class="status-bar">
-                    <span>SYS: ONLINE</span>
-                    <span>LOC: FERNDALE, WA</span>
-                    <span>DATE: OCT 14 1988</span>
-                    <button id="sound-toggle" class="retro-btn">[ MUTE ]</button>
+            <header class="top-bar">
+                <div class="sys-info">
+                    <span>FERNDALE_OS v2.0</span>
+                    <span id="clock">00:00:00</span>
                 </div>
-                
-                <div class="logo-container glitch-effect">
-                    <h1>OFF THE MAP</h1>
+                <div class="sys-controls">
+                    <button id="audio-btn" class="ui-btn">[ AUDIO: OFF ]</button>
                 </div>
-                <p class="subtitle">ANOMALY DETECTION SYSTEM v1.88</p>
             </header>
 
-            <hr class="separator">
-
-            <section class="file-entry reveal">
-                <div class="file-header">
-                    <span class="file-id">SYS_MSG: EMPLOYEE_CONDUCT</span>
-                    <span class="file-status highlight">[MANDATORY]</span>
+            <div class="hero-section">
+                <h1 class="glitch-text" data-text="OFF THE MAP">OFF THE MAP</h1>
+                <div class="warning-banner">
+                    ⚠ UNAUTHORIZED ACCESS DETECTED IN SECTOR 4 ⚠
                 </div>
-                <div class="type-body">
-                    <p class="highlight">SURVIVAL PROTOCOL:</p>
-                    <ul class="terminal-list">
-                        <li>> 5 STRIKES = TERMINATION</li>
-                        <li>> INCORRECT DECISION = 1 STRIKE + $30 PENALTY</li>
-                        <li>> STRIKES RESET DAILY</li>
-                    </ul>
-                    <br>
-                    <p class="highlight">POWER OUTAGE PROTOCOL:</p>
-                    <ul class="terminal-list">
-                        <li>> REMAIN AT YOUR POST</li>
-                        <li>> DO NOT INVESTIGATE</li>
-                        <li>> PROCEED TO BACK ROOM ONLY TO ACTIVATE FUSE BOX</li>
-                    </ul>
-                </div>
-            </section>
-
-            <h2 class="section-title reveal">>> THREAT_DATABASE</h2>
-            
-            <div class="filter-bar reveal">
-                <label for="protocol-filter">FILTER PROTOCOLS:</label>
-                <select id="protocol-filter" class="retro-select">
-                    <option value="all">SHOW ALL</option>
-                    <option value="physical">PHYSICAL</option>
-                    <option value="behavior">BEHAVIORAL</option>
-                    <option value="identity">IDENTITY</option>
-                </select>
             </div>
 
-            <div id="protocol-container"></div>
-
-            <h2 class="section-title reveal">>> CITIZEN_REGISTRY_SAMPLE</h2>
-            
-            <div class="filter-bar reveal">
-                <input type="text" id="resident-search" class="retro-input" placeholder="SEARCH NAME OR ID...">
-                <select id="missing-filter" class="retro-select">
-                    <option value="all">STATUS: ALL</option>
-                    <option value="safe">STATUS: SAFE</option>
-                    <option value="missing">STATUS: MISSING</option>
-                </select>
-            </div>
-
-            <div id="registry-container"></div>
-
-            <footer class="footer-section reveal">
-                <div class="coming-soon-box">
-                    <h2>COMING SOON</h2>
-                    <div class="loading-bar">
-                        <div class="progress"></div>
+            <div class="grid-layout">
+                
+                <div class="grid-item rules-box">
+                    <h3>>> EMPLOYEE_HANDBOOK.TXT</h3>
+                    <div class="text-content">
+                        <p class="danger-text">STRIKE PROTOCOL:</p>
+                        <ul>
+                            <li>> 5 STRIKES = TERMINATION</li>
+                            <li>> BAD DECISION = $30 FINE</li>
+                            <li>> RESET: DAILY 06:00</li>
+                        </ul>
+                        <br>
+                        <p class="danger-text">BLACKOUT DRILL:</p>
+                        <ul>
+                            <li>> STAY BEHIND COUNTER</li>
+                            <li>> IGNORE THE NOISES</li>
+                            <li>> FIX FUSE BOX ONLY</li>
+                        </ul>
                     </div>
-                    <p class="blink">AWAITING SIGNAL...</p>
                 </div>
-                <div class="links">
-                    <a href="#" class="retro-link">[ ROBLOX ]</a>
-                    <a href="#" class="retro-link">[ DISCORD ]</a>
+
+                <div class="grid-item protocol-box">
+                    <h3>>> THREAT_DB</h3>
+                    <div class="filter-ui">
+                        <label>FILTER:</label>
+                        <select id="proto-select" class="retro-dropdown">
+                            <option value="all">* DISPLAY ALL *</option>
+                            <option value="physical">PHYSICAL ANOMALY</option>
+                            <option value="behavior">BEHAVIORAL</option>
+                            <option value="identity">IDENTITY THEFT</option>
+                        </select>
+                    </div>
+                    <div id="protocol-display" class="scroll-box">
+                        </div>
                 </div>
-                <p class="copyright">© 1988 FERNDALE MUNICIPAL ARCHIVE</p>
+
+                <div class="grid-item registry-box">
+                    <h3>>> CITIZEN_DATABASE</h3>
+                    <div class="filter-ui">
+                        <input type="text" id="search-input" class="retro-input" placeholder="ENTER NAME OR ID...">
+                        <select id="status-select" class="retro-dropdown">
+                            <option value="all">STATUS: ANY</option>
+                            <option value="safe">VERIFIED</option>
+                            <option value="missing">MISSING</option>
+                        </select>
+                    </div>
+                    <div id="registry-display" class="scroll-box">
+                        </div>
+                </div>
+
+            </div>
+
+            <footer class="site-footer">
+                <div class="footer-box">
+                    <h2>COMING SOON</h2>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <p class="blinking-text">ESTABLISHING CONNECTION...</p>
+                    <div class="social-links">
+                        <a href="#">[ ROBLOX ]</a>
+                        <a href="#">[ DISCORD ]</a>
+                    </div>
+                </div>
+                <p class="copyright">PROPERTY OF FERNDALE MUNICIPALITY // 1988</p>
             </footer>
 
         </main>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
