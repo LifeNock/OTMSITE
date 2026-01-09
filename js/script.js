@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const bootTextContainer = document.getElementById('boot-text');
     const mainInterface = document.getElementById('main-interface');
     
-    // Audio Toggle
     const soundBtn = document.getElementById('sound-toggle');
     let soundEnabled = false;
 
@@ -46,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- 2. GAME DATA (FIXED SYNTAX) ---
+    // Objects use COLONS (:), not EQUALS (=)
     
     const protocols = [
         {type: "physical", title:"PHYSICAL DEFORMITIES", desc:"IDENTIFICATION: Extra or missing limbs, multiple heads, distorted facial features.<br>PROTOCOL: Deny service immediately. Do not make direct eye contact."},
@@ -62,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
         {name:"PATTERSON, MICHAEL", dob:"06/14/1956", id:"487-29-6153", occupation:"BANKER", missing:"NO"},
         {name:"HAYES, ROBERT", dob:"03/22/1952", id:"651-43-8927", occupation:"MECHANIC", missing:"NO"},
         {name:"MORRISON, DAVID", dob="11/08/1949", id:"159-82-4736", occupation:"TEACHER", missing:"NO"},
-        {name:"FOSTER, JAMES", dob:"09/30/1954", id:"917-54-2638", occupation:"ELECTRICIAN", missing:"NO"},
+        {name:"FOSTER, JAMES", dob="09/30/1954", id:"917-54-2638", occupation:"ELECTRICIAN", missing:"NO"},
         {name:"LEE, CHRISTOPHER", dob="04/17/1947", id:"264-78-9145", occupation:"PLUMBER", missing:"NO"},
-        {name:"COOPER, DANIEL", dob:"12/25/1950", id:"925-48-1637", occupation:"ACCOUNTANT", missing:"NO"},
-        {name:"WRIGHT, MATTHEW", dob="08/11/1966", id:"384-72-5916", occupation="DELIVERY DRIVER", missing:"YES"}, 
+        {name:"COOPER, DANIEL", dob="12/25/1950", id:"925-48-1637", occupation:"ACCOUNTANT", missing:"NO"},
+        {name:"WRIGHT, MATTHEW", dob="08/11/1966", id:"384-72-5916", occupation="DELIVERY DRIVER", missing:"YES"},
         {name:"BENNETT, JOSHUA", dob="02/19/1953", id:"862-51-4398", occupation="CONSTRUCTION WORKER", missing:"NO"},
         {name:"KELLY, BRANDON", dob="07/05/1951", id:"743-94-2156", occupation="WAREHOUSE MANAGER", missing:"NO"},
         {name:"MURPHY, KEVIN", dob="10/28/1948", id:"439-17-5624", occupation="STORE CLERK", missing:"NO"},
@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         {name:"MITCHELL, FRANK", dob="12/15/1909", id:"795-16-4823", occupation="RETIRED", missing:"NO"},
         {name:"COLLINS, SARAH", dob="05/18/1959", id:"736-21-5984", occupation="NURSE", missing:"NO"},
         {name:"WALSH, JENNIFER", dob="09/30/1953", id:"482-95-6371", occupation="ACCOUNTANT", missing:"NO"},
-        {name:"BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
-        {name:"STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
+        {name="BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
+        {name="STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
         {name="RODRIGUEZ, REBECCA", dob="03/08/1954", id:"517-26-8943", occupation="HAIR STYLIST", missing:"NO"},
         {name="PRICE, EMILY", dob="11/16/1947", id:"286-65-7831", occupation="DENTAL HYGIENIST", missing:"NO"},
         {name="SCOTT, RACHEL", dob="06/28/1952", id:"694-82-3179", occupation="OFFICE MANAGER", missing:"NO"},
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {name="WHITE, COURTNEY", dob="08/15/1954", id:"493-67-2841", occupation="POLICE OFFICER", missing:"NO"},
         {name="HARRIS, DANIELLE", dob="04/03/1949", id:"154-89-6372", occupation="POLICE OFFICER", missing:"NO"},
         {name="YOUNG, MONICA", dob="12/11/1956", id:"867-32-4195", occupation="POLICE OFFICER", missing:"NO"},
-        {name="KING, ASHLEY", dob="06/07/1951", id:"329-74-5618", occupation="SWAT OFFICER", missing:"NO"},
+        {name="KING, ASHLEY", dob="06/07/1951", id:"573-04-5618", occupation="SWAT OFFICER", missing:"NO"},
         {name="THOMAS, STEPHANIE", dob="10/22/1953", id:"715-48-9263", occupation="SWAT OFFICER", missing:"NO"},
         {name="JOHNSON, CRYSTAL", dob="03/14/1955", id:"582-93-1746", occupation="FIREFIGHTER", missing:"NO"},
         {name="MARTINEZ, DIANA", dob="09/28/1947", id:"946-27-3581", occupation="FIREFIGHTER", missing:"NO"},
@@ -123,9 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
         {name="MILLER, KAREN", dob="11/08/1945", id:"457-62-9138", occupation="DOCTOR", missing:"NO"}
     ];
 
-    // --- 3. FILTER LOGIC & RENDERING ---
+    // --- 3. FILTER LOGIC ---
     
-    // Protocol Filter
     const protoFilter = document.getElementById('protocol-filter');
     protoFilter.addEventListener('change', () => {
         renderProtocols(protoFilter.value);
@@ -133,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProtocols(filterType) {
         const container = document.getElementById('protocol-container');
-        container.innerHTML = ""; // Clear existing
+        container.innerHTML = "";
 
         protocols.forEach(p => {
             if (filterType === 'all' || p.type === filterType) {
@@ -150,10 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        setupObserver(); // Re-trigger animations
+        setupObserver();
     }
 
-    // Resident Search & Filter
     const resSearch = document.getElementById('resident-search');
     const resFilter = document.getElementById('missing-filter');
 
@@ -170,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
         container.innerHTML = "";
 
         residents.forEach(r => {
-            // Logic: Does this resident match BOTH the search text AND the missing filter?
             const matchesText = r.name.includes(searchText) || r.id.includes(searchText);
             const matchesFilter = filterStatus === 'all' || 
                                   (filterStatus === 'missing' && r.missing === 'YES') ||
@@ -180,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const div = document.createElement('div');
                 div.className = 'file-entry reveal';
                 
-                // Add red alert style for missing persons
                 const missingStyle = r.missing === 'YES' ? 'class="missing-alert"' : '';
                 const verifiedStatus = r.missing === 'YES' ? '[MISSING]' : '[VERIFIED]';
 
@@ -204,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 4. UTILITIES ---
     
-    const soundBtn = document.getElementById('sound-toggle');
     soundBtn.addEventListener('click', () => {
         soundEnabled = !soundEnabled;
         soundBtn.textContent = soundEnabled ? "[ SOUND: ON ]" : "[ SOUND: OFF ]";
@@ -220,6 +215,5 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
 
-    // Trigger boot
     setTimeout(typeLine, 500);
 });
