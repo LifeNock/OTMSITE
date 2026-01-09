@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. SETUP & VARIABLES ---
+    // --- 1. BOOT SEQUENCE ---
     const bootLines = [
         "BIOS DATE 01/01/88",
         "CPU: NEC V20... OK",
-        "LOADING INTERFACE...",
+        "LOADING FERNDALE_GAS_AND_GO_OS...",
+        "CHECKING REGISTER... ONLINE",
+        "CHECKING CCTV... ONLINE",
         "MOUNTING DRIVE C: ... SUCCESS",
         "SYSTEM READY."
     ];
 
-    // DOM Elements
     const bootScreen = document.getElementById('boot-layer');
     const bootConsole = document.getElementById('boot-console');
     const globalHeader = document.getElementById('global-header');
@@ -65,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
     audioBtn.addEventListener('click', () => {
         isMuted = !isMuted;
         audioBtn.innerText = isMuted ? "[ AUDIO: OFF ]" : "[ AUDIO: ON ]";
-        // In a real browser, this is where you would play/pause bgm.mp3
     });
 
     // Filters
@@ -96,32 +96,32 @@ document.addEventListener("DOMContentLoaded", () => {
         {
             type: "physical", 
             title: "PHYSICAL DEFORMITIES", 
-            desc: "IDENTIFICATION: Extra/missing limbs. Distorted faces.<br>ACTION: Deny service."
+            desc: "IDENTIFICATION: Impossible physical traits (extra limbs).<br>ACTION: Deny service. Avoid eye contact."
         },
         {
             type: "physical", 
             title: "VISUAL DISTORTIONS", 
-            desc: "IDENTIFICATION: Pixelated skin. Flickering parts.<br>ACTION: Focus on ID."
+            desc: "IDENTIFICATION: Pixelated skin, unnatural colors.<br>ACTION: Focus on ID description."
         },
         {
             type: "identity", 
             title: "FRAUDULENT ID", 
-            desc: "IDENTIFICATION: Misspelled names. Future birth years.<br>ACTION: Verify registry."
-        },
-        {
-            type: "identity", 
-            title: "IDENTITY THEFT", 
-            desc: "IDENTIFICATION: Appearance mismatch with registry.<br>ACTION: Scan fingerprints."
+            desc: "IDENTIFICATION: Incorrect personal details or format.<br>ACTION: Verify against registry."
         },
         {
             type: "behavior", 
-            title: "BEHAVIORAL ANOMALY", 
-            desc: "IDENTIFICATION: Teleportation. Distorted audio.<br>ACTION: End conversation."
+            title: "BEHAVIORAL ABNORMALITIES", 
+            desc: "IDENTIFICATION: Wrong behavior, robotic movement.<br>ACTION: Complete transaction quickly."
+        },
+        {
+            type: "special", 
+            title: "RECURRING ENTITY (CLOWN)", 
+            desc: "IDENTIFICATION: Clown attire. Shouldn't exist.<br>ACTION: COMPLY. Serve immediately. Do not deny."
         },
         {
             type: "identity", 
             title: "MISSING PERSON", 
-            desc: "IDENTIFICATION: Status is MISSING in DB.<br>ACTION: Silent alarm."
+            desc: "IDENTIFICATION: Status marked as MISSING in DB.<br>ACTION: Deny service. Silent alarm."
         }
     ];
 
@@ -188,9 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const div = document.createElement('div');
                 div.className = "data-card";
                 
+                // Set color based on type
                 let colorClass = "status-ok";
                 if(p.type === "identity") colorClass = "danger-text";
-                if(p.type === "behavior") colorClass = "highlight";
+                if(p.type === "special") colorClass = "highlight"; // Special color for Clown
 
                 div.innerHTML = `
                     <div class="data-header">
