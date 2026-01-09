@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         setupObserver();
     }
 
-    // --- 2. GAME DATA (VALID JS OBJECTS) ---
-    // Note: Used colons (:), not equals (=). Double checked.
+    // --- 2. GAME DATA (FIXED SYNTAX) ---
+    // Objects use COLONS (:), not EQUALS (=). 
     
     const protocols = [
         {type: "physical", title:"PHYSICAL DEFORMITIES", desc:"IDENTIFICATION: Extra or missing limbs, multiple heads, distorted facial features.<br>PROTOCOL: Deny service immediately. Do not make direct eye contact."},
@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
         {name:"FOSTER, JAMES", dob="09/30/1954", id:"917-54-2638", occupation:"ELECTRICIAN", missing:"NO"},
         {name:"LEE, CHRISTOPHER", dob="04/17/1947", id:"264-78-9145", occupation:"PLUMBER", missing:"NO"},
         {name:"COOPER, DANIEL", dob="12/25/1950", id:"925-48-1637", occupation:"ACCOUNTANT", missing:"NO"},
-        {name:"WRIGHT, MATTHEW", dob="08/11/1966", id:"384-72-5916", occupation="DELIVERY DRIVER", missing:"YES"},
-        {name:"BENNETT, JOSHUA", dob="02/19/1953", id:"862-51-4398", occupation="CONSTRUCTION WORKER", missing:"NO"},
-        {name:"KELLY, BRANDON", dob="07/05/1951", id:"743-94-2156", occupation="WAREHOUSE MANAGER", missing:"NO"},
-        {name:"MURPHY, KEVIN", dob="10/28/1948", id:"439-17-5624", occupation="STORE CLERK", missing:"NO"},
+        {name:"WRIGHT, MATTHEW", dob="08/11/1966", id:"384-72-5916", occupation:"DELIVERY DRIVER", missing:"YES"},
+        {name:"BENNETT, JOSHUA", dob="02/19/1953", id:"862-51-4398", occupation:"CONSTRUCTION WORKER", missing:"NO"},
+        {name:"KELLY, BRANDON", dob="07/05/1951", id:"743-94-2156", occupation:"WAREHOUSE MANAGER", missing:"NO"},
+        {name:"MURPHY, KEVIN", dob="10/28/1948", id:"439-17-5624", occupation:"STORE CLERK", missing:"NO"},
         {name:"BARNES, TYLER", dob="01/14/1965", id:"821-43-9562", occupation="LANDSCAPER", missing:"NO"},
         {name:"HILL, GREGORY", dob="05/09/1945", id:"952-34-6813", occupation="SECURITY GUARD", missing:"YES"},
         {name:"STEWART, NATHAN", dob="09/23/1967", id:"647-21-8534", occupation="COOK", missing:"NO"},
@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         {name:"MITCHELL, FRANK", dob="12/15/1909", id:"795-16-4823", occupation="RETIRED", missing:"NO"},
         {name:"COLLINS, SARAH", dob="05/18/1959", id:"736-21-5984", occupation="NURSE", missing:"NO"},
         {name:"WALSH, JENNIFER", dob="09/30/1953", id:"482-95-6371", occupation="ACCOUNTANT", missing:"NO"},
-        {name:"BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
-        {name:"STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
+        {name="BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
+        {name="STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
         {name="RODRIGUEZ, REBECCA", dob="03/08/1954", id:"517-26-8943", occupation="HAIR STYLIST", missing:"NO"},
         {name="PRICE, EMILY", dob="11/16/1947", id:"286-65-7831", occupation="DENTAL HYGIENIST", missing:"NO"},
         {name="SCOTT, RACHEL", dob="06/28/1952", id:"694-82-3179", occupation="OFFICE MANAGER", missing:"NO"},
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProtocols(filterType) {
         const container = document.getElementById('protocol-container');
-        container.innerHTML = "";
+        container.innerHTML = ""; 
 
         protocols.forEach(p => {
             if (filterType === 'all' || p.type === filterType) {
