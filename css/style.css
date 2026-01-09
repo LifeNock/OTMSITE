@@ -9,7 +9,7 @@
 /* CUSTOM FONT LOADING */
 @font-face {
     font-family: 'VCR_OSD';
-    /* Assumes font file is in the root folder, so we go up one level from css/ */
+    /* Assumes font file is in the root folder (same as index.html) */
     src: url('../VCR_OSD_MONO_1.001.ttf') format('truetype');
 }
 
@@ -19,7 +19,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--phosphor);
-    font-family: 'VCR_OSD', monospace; /* Applied custom font here */
+    font-family: 'VCR_OSD', monospace; 
     overflow-x: hidden;
     height: 100vh;
     font-size: 20px;
