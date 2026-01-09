@@ -2,20 +2,24 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // --- 1. BOOT SEQUENCE ---
     const bootLines = [
-        "FERNDALE_BIOS v1.02",
-        "CHECKING MEMORY... 640K OK",
-        "LOADING SYSTEM KERNEL...",
-        "MOUNTING DRIVE C: [OK]",
-        "ESTABLISHING SECURE CONNECTION...",
-        "DOWNLOADING CITIZEN DATA...",
-        "DOWNLOADING THREAT PROTOCOLS...",
+        "BIOS DATE 01/01/88",
+        "CPU: NEC V20... OK",
+        "LOADING INTERFACE...",
+        "MOUNTING DRIVE C: ... SUCCESS",
         "SYSTEM READY."
     ];
 
     const bootScreen = document.getElementById('boot-layer');
     const bootConsole = document.getElementById('boot-console');
-    const dashboard = document.getElementById('dashboard');
+    const globalHeader = document.getElementById('global-header');
+    const landingPage = document.getElementById('landing-page');
+    const databasePage = document.getElementById('database-page');
     
+    // Buttons
+    const enterDbBtn = document.getElementById('enter-db-btn');
+    const backBtn = document.getElementById('back-btn');
+    const audioBtn = document.getElementById('audio-btn');
+
     let lineIndex = 0;
 
     function runBoot() {
@@ -24,51 +28,66 @@ document.addEventListener("DOMContentLoaded", () => {
             p.textContent = "> " + bootLines[lineIndex];
             bootConsole.appendChild(p);
             lineIndex++;
-            setTimeout(runBoot, 150); 
+            setTimeout(runBoot, 200); 
         } else {
-            setTimeout(showDashboard, 1000);
+            setTimeout(showLanding, 800);
         }
     }
 
-    function showDashboard() {
+    function showLanding() {
         bootScreen.classList.add('hidden');
-        dashboard.classList.remove('hidden');
-        renderAllData(); // Populate lists
+        globalHeader.classList.remove('hidden');
+        landingPage.classList.remove('hidden');
+        
+        // Start scroll animations
+        setupObserver();
     }
 
-    // --- 2. GAME DATA ---
-    // Strict JSON format used here. No equals signs.
+    // --- 2. NAVIGATION ---
+    
+    enterDbBtn.addEventListener('click', () => {
+        landingPage.classList.add('hidden');
+        databasePage.classList.remove('hidden');
+        renderAllData(); // Load data only when needed
+    });
+
+    backBtn.addEventListener('click', () => {
+        databasePage.classList.add('hidden');
+        landingPage.classList.remove('hidden');
+    });
+
+    // --- 3. GAME DATA ---
     
     const protocols = [
         {
             type: "physical", 
             title: "PHYSICAL DEFORMITIES", 
-            desc: "IDENTIFICATION: Extra or missing limbs, multiple heads.<br>ACTION: Deny service immediately."
+            desc: "IDENTIFICATION: Extra/missing limbs. Distorted faces.<br>ACTION: Deny service."
         },
         {
             type: "physical", 
             title: "VISUAL DISTORTIONS", 
-            desc: "IDENTIFICATION: Pixelated skin, flickering body parts.<br>ACTION: Focus on ID card details."
+            desc: "IDENTIFICATION: Pixelated skin. Flickering parts.<br>ACTION: Focus on ID."
         },
         {
             type: "identity", 
             title: "FRAUDULENT ID", 
-            desc: "IDENTIFICATION: Misspelled names, impossible birth years.<br>ACTION: Verify with registry."
+            desc: "IDENTIFICATION: Misspelled names. Future birth years.<br>ACTION: Verify registry."
         },
         {
             type: "identity", 
             title: "IDENTITY THEFT", 
-            desc: "IDENTIFICATION: Appearance does not match registry photo.<br>ACTION: Scan fingerprints if available."
+            desc: "IDENTIFICATION: Appearance mismatch with registry.<br>ACTION: Scan fingerprints."
         },
         {
             type: "behavior", 
             title: "BEHAVIORAL ANOMALY", 
-            desc: "IDENTIFICATION: Teleportation, distorted speech.<br>ACTION: Minimize conversation."
+            desc: "IDENTIFICATION: Teleportation. Distorted audio.<br>ACTION: End conversation."
         },
         {
             type: "identity", 
             title: "MISSING PERSON", 
-            desc: "IDENTIFICATION: Status marked as MISSING in DB.<br>ACTION: Silent alarm. Do not engage."
+            desc: "IDENTIFICATION: Status is MISSING in DB.<br>ACTION: Silent alarm."
         }
     ];
 
@@ -114,11 +133,14 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "EVANS, HELEN", id: "893-27-4651", job: "RETIRED", missing: "YES" }
     ];
 
-    // --- 3. RENDER LOGIC ---
+    // --- 4. RENDER LOGIC ---
 
     function renderAllData() {
-        renderProtocols("all");
-        renderResidents("all", "");
+        // Only render if empty to prevent duplicates
+        if(document.getElementById('protocol-display').children.length === 0) {
+            renderProtocols("all");
+            renderResidents("all", "");
+        }
     }
 
     // Render Protocols
@@ -132,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const div = document.createElement('div');
                 div.className = "data-card";
                 
-                // Set color based on type
                 let colorClass = "status-ok";
                 if(p.type === "identity") colorClass = "danger-text";
                 if(p.type === "behavior") colorClass = "highlight";
@@ -156,10 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         regContainer.innerHTML = "";
 
         residents.forEach(r => {
-            // Text Match
             const textMatch = r.name.includes(searchText) || r.id.includes(searchText);
             
-            // Status Match
             let statusMatch = false;
             if (statusFilter === "all") statusMatch = true;
             if (statusFilter === "safe" && r.missing === "NO") statusMatch = true;
@@ -188,14 +207,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 4. LISTENERS ---
+    // --- 5. LISTENERS ---
 
-    // Protocol Filter
     document.getElementById('proto-select').addEventListener('change', (e) => {
         renderProtocols(e.target.value);
     });
 
-    // Resident Search
     const searchInput = document.getElementById('search-input');
     const statusSelect = document.getElementById('status-select');
 
@@ -207,20 +224,29 @@ document.addEventListener("DOMContentLoaded", () => {
         renderResidents(e.target.value, searchInput.value.toUpperCase());
     });
 
-    // Clock
     setInterval(() => {
         const now = new Date();
         document.getElementById('clock').innerText = now.toLocaleTimeString();
     }, 1000);
 
-    // Audio Toggle
-    const audioBtn = document.getElementById('audio-btn');
     let isMuted = true;
+    const audioBtn = document.getElementById('audio-btn');
     audioBtn.addEventListener('click', () => {
         isMuted = !isMuted;
         audioBtn.innerText = isMuted ? "[ AUDIO: OFF ]" : "[ AUDIO: ON ]";
     });
 
-    // Start
+    // Intersection Observer for scroll animations
+    function setupObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // START
     runBoot();
 });
