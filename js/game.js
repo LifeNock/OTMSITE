@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. BOOT SEQUENCE ---
+    // --- 1. SETUP & VARIABLES ---
     const bootLines = [
         "BIOS DATE 01/01/88",
         "CPU: NEC V20... OK",
@@ -9,19 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
         "SYSTEM READY."
     ];
 
+    // DOM Elements
     const bootScreen = document.getElementById('boot-layer');
     const bootConsole = document.getElementById('boot-console');
     const globalHeader = document.getElementById('global-header');
     const landingPage = document.getElementById('landing-page');
     const databasePage = document.getElementById('database-page');
     
-    // Buttons
+    // Buttons & Controls
     const enterDbBtn = document.getElementById('enter-db-btn');
     const backBtn = document.getElementById('back-btn');
     const audioBtn = document.getElementById('audio-btn');
-
+    
+    // State
     let lineIndex = 0;
+    let isMuted = true;
 
+    // --- 2. BOOT SEQUENCE ---
     function runBoot() {
         if (lineIndex < bootLines.length) {
             const p = document.createElement('p');
@@ -43,8 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setupObserver();
     }
 
-    // --- 2. NAVIGATION ---
+    // --- 3. EVENT LISTENERS ---
     
+    // Navigation
     enterDbBtn.addEventListener('click', () => {
         landingPage.classList.add('hidden');
         databasePage.classList.remove('hidden');
@@ -56,7 +61,36 @@ document.addEventListener("DOMContentLoaded", () => {
         landingPage.classList.remove('hidden');
     });
 
-    // --- 3. GAME DATA ---
+    // Audio Toggle
+    audioBtn.addEventListener('click', () => {
+        isMuted = !isMuted;
+        audioBtn.innerText = isMuted ? "[ AUDIO: OFF ]" : "[ AUDIO: ON ]";
+        // In a real browser, this is where you would play/pause bgm.mp3
+    });
+
+    // Filters
+    document.getElementById('proto-select').addEventListener('change', (e) => {
+        renderProtocols(e.target.value);
+    });
+
+    const searchInput = document.getElementById('search-input');
+    const statusSelect = document.getElementById('status-select');
+
+    searchInput.addEventListener('input', (e) => {
+        renderResidents(statusSelect.value, e.target.value.toUpperCase());
+    });
+
+    statusSelect.addEventListener('change', (e) => {
+        renderResidents(e.target.value, searchInput.value.toUpperCase());
+    });
+
+    // Clock
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+    }, 1000);
+
+    // --- 4. GAME DATA ---
     
     const protocols = [
         {
@@ -133,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "EVANS, HELEN", id: "893-27-4651", job: "RETIRED", missing: "YES" }
     ];
 
-    // --- 4. RENDER LOGIC ---
+    // --- 5. RENDER FUNCTIONS ---
 
     function renderAllData() {
         // Only render if empty to prevent duplicates
@@ -177,8 +211,10 @@ document.addEventListener("DOMContentLoaded", () => {
         regContainer.innerHTML = "";
 
         residents.forEach(r => {
+            // Text Match
             const textMatch = r.name.includes(searchText) || r.id.includes(searchText);
             
+            // Status Match
             let statusMatch = false;
             if (statusFilter === "all") statusMatch = true;
             if (statusFilter === "safe" && r.missing === "NO") statusMatch = true;
@@ -206,35 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-    // --- 5. LISTENERS ---
-
-    document.getElementById('proto-select').addEventListener('change', (e) => {
-        renderProtocols(e.target.value);
-    });
-
-    const searchInput = document.getElementById('search-input');
-    const statusSelect = document.getElementById('status-select');
-
-    searchInput.addEventListener('input', (e) => {
-        renderResidents(statusSelect.value, e.target.value.toUpperCase());
-    });
-
-    statusSelect.addEventListener('change', (e) => {
-        renderResidents(e.target.value, searchInput.value.toUpperCase());
-    });
-
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString();
-    }, 1000);
-
-    let isMuted = true;
-    const audioBtn = document.getElementById('audio-btn');
-    audioBtn.addEventListener('click', () => {
-        isMuted = !isMuted;
-        audioBtn.innerText = isMuted ? "[ AUDIO: OFF ]" : "[ AUDIO: ON ]";
-    });
 
     // Intersection Observer for scroll animations
     function setupObserver() {
