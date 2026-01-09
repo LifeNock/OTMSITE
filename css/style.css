@@ -7,9 +7,9 @@
 }
 
 /* CUSTOM FONT LOADING */
+/* Ensure VCR_OSD_MONO_1.001.ttf is in the main folder */
 @font-face {
     font-family: 'VCR_OSD';
-    /* Assumes font file is in the root folder (same as index.html) */
     src: url('../VCR_OSD_MONO_1.001.ttf') format('truetype');
 }
 
