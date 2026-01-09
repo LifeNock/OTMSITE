@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
             p.textContent = "> " + bootLines[lineIndex];
             bootTextContainer.appendChild(p);
             lineIndex++;
-            // Random typing speed
             setTimeout(typeLine, Math.random() * 50 + 30);
         } else {
             setTimeout(startMainSite, 800);
@@ -40,15 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
         bootScreen.style.display = 'none';
         mainInterface.classList.remove('hidden');
         
-        // Initial Render
         renderProtocols("all");
         renderResidents("all", "");
         
         setupObserver();
     }
 
-    // --- 2. GAME DATA (Converted from Lua) ---
-    // Note: Converted to JS Object format (key: value)
+    // --- 2. GAME DATA (FIXED SYNTAX) ---
     
     const protocols = [
         {type: "physical", title:"PHYSICAL DEFORMITIES", desc:"IDENTIFICATION: Extra or missing limbs, multiple heads, distorted facial features.<br>PROTOCOL: Deny service immediately. Do not make direct eye contact."},
@@ -63,11 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const residents = [
         {name:"PATTERSON, MICHAEL", dob:"06/14/1956", id:"487-29-6153", occupation:"BANKER", missing:"NO"},
-        {name:"HAYES, ROBERT", dob="03/22/1952", id:"651-43-8927", occupation:"MECHANIC", missing:"NO"},
+        {name:"HAYES, ROBERT", dob:"03/22/1952", id:"651-43-8927", occupation:"MECHANIC", missing:"NO"},
         {name:"MORRISON, DAVID", dob="11/08/1949", id:"159-82-4736", occupation:"TEACHER", missing:"NO"},
-        {name:"FOSTER, JAMES", dob="09/30/1954", id:"917-54-2638", occupation:"ELECTRICIAN", missing:"NO"},
-        {name:"LEE, CHRISTOPHER", dob="04/17/1947", id:"264-78-9145", occupation="PLUMBER", missing:"NO"},
-        {name:"COOPER, DANIEL", dob="12/25/1950", id:"925-48-1637", occupation:"ACCOUNTANT", missing:"NO"},
+        {name:"FOSTER, JAMES", dob:"09/30/1954", id:"917-54-2638", occupation:"ELECTRICIAN", missing:"NO"},
+        {name:"LEE, CHRISTOPHER", dob="04/17/1947", id:"264-78-9145", occupation:"PLUMBER", missing:"NO"},
+        {name:"COOPER, DANIEL", dob:"12/25/1950", id:"925-48-1637", occupation:"ACCOUNTANT", missing:"NO"},
         {name:"WRIGHT, MATTHEW", dob="08/11/1966", id:"384-72-5916", occupation="DELIVERY DRIVER", missing:"YES"}, 
         {name:"BENNETT, JOSHUA", dob="02/19/1953", id:"862-51-4398", occupation="CONSTRUCTION WORKER", missing:"NO"},
         {name:"KELLY, BRANDON", dob="07/05/1951", id:"743-94-2156", occupation="WAREHOUSE MANAGER", missing:"NO"},
@@ -78,13 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
         {name:"PARKER, RYAN", dob="03/16/1944", id:"863-42-5178", occupation="TRUCK DRIVER", missing:"NO"},
         {name:"COOK, AUSTIN", dob="11/30/1958", id:"683-91-2564", occupation="LIBRARIAN", missing:"NO"},
         {name:"THOMPSON, HAROLD", dob="02/12/1912", id:"241-89-7356", occupation="RETIRED", missing:"NO"},
-        {name:"JENKINS, WALTER", dob="08/07/1910", id:"293-84-7261", occupation="RETIRED", missing="NO"},
+        {name:"JENKINS, WALTER", dob="08/07/1910", id:"293-84-7261", occupation="RETIRED", missing:"NO"},
         {name:"ANDERSON, GEORGE", dob="04/22/1907", id:"528-67-3941", occupation="RETIRED", missing:"NO"},
         {name:"MITCHELL, FRANK", dob="12/15/1909", id:"795-16-4823", occupation="RETIRED", missing:"NO"},
         {name:"COLLINS, SARAH", dob="05/18/1959", id:"736-21-5984", occupation="NURSE", missing:"NO"},
         {name:"WALSH, JENNIFER", dob="09/30/1953", id:"482-95-6371", occupation="ACCOUNTANT", missing:"NO"},
-        {name="BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
-        {name="STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
+        {name:"BROOKS, AMANDA", dob="01/11/1956", id:"538-16-7492", occupation="TEACHER", missing:"NO"},
+        {name:"STONE, MICHELLE", dob="07/24/1951", id:"671-39-8254", occupation="RECEPTIONIST", missing:"YES"},
         {name="RODRIGUEZ, REBECCA", dob="03/08/1954", id:"517-26-8943", occupation="HAIR STYLIST", missing:"NO"},
         {name="PRICE, EMILY", dob="11/16/1947", id:"286-65-7831", occupation="DENTAL HYGIENIST", missing:"NO"},
         {name="SCOTT, RACHEL", dob="06/28/1952", id:"694-82-3179", occupation="OFFICE MANAGER", missing:"NO"},
@@ -153,8 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        // Re-trigger animations for new elements
-        setupObserver();
+        setupObserver(); // Re-trigger animations
     }
 
     // Resident Search & Filter
@@ -208,11 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 4. UTILITIES ---
     
-    // Sound Toggle
+    const soundBtn = document.getElementById('sound-toggle');
     soundBtn.addEventListener('click', () => {
         soundEnabled = !soundEnabled;
         soundBtn.textContent = soundEnabled ? "[ SOUND: ON ]" : "[ SOUND: OFF ]";
-        // In a real browser, you'd trigger audio.play() here
     });
 
     function setupObserver() {
