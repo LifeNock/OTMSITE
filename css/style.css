@@ -86,7 +86,7 @@ body {
     margin-bottom: 40px;
     border-left: 4px solid var(--green);
     padding-left: 20px;
-    opacity: 0; /* For animation */
+    opacity: 0;
     transform: translateX(-20px);
     transition: all 0.8s ease;
 }
